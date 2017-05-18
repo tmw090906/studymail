@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.ouc.mail.dao.ShippingMapper" >
+  <resultMap id="BaseResultMap" type="edu.ouc.mail.pojo.Shipping" >
+    <constructor >
+      <idArg column="ID" jdbcType="DECIMAL" javaType="java.lang.Long" />
+      <arg column="USER_ID" jdbcType="DECIMAL" javaType="java.lang.Long" />
+      <arg column="RECEIVER_NAME" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="RECEIVER_PHONE" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="RECEIVER_MOBILE" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="RECEIVER_PROVINCE" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="RECEIVER_CITY" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="RECEIVER_DISTRICT" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="RECEIVER_ADDRESS" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="RECEIVER_ZIP" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="CREATE_TIME" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="UPDATE_TIME" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, USER_ID, RECEIVER_NAME, RECEIVER_PHONE, RECEIVER_MOBILE, RECEIVER_PROVINCE, RECEIVER_CITY, 
+    RECEIVER_DISTRICT, RECEIVER_ADDRESS, RECEIVER_ZIP, CREATE_TIME, UPDATE_TIME
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from MAIL_SHIPPING
+    where ID = #{id,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from MAIL_SHIPPING
+    where ID = #{id,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="edu.ouc.mail.pojo.Shipping" >
+    insert into MAIL_SHIPPING (ID, USER_ID, RECEIVER_NAME, 
+      RECEIVER_PHONE, RECEIVER_MOBILE, RECEIVER_PROVINCE, 
+      RECEIVER_CITY, RECEIVER_DISTRICT, RECEIVER_ADDRESS, 
+      RECEIVER_ZIP, CREATE_TIME, UPDATE_TIME
+      )
+    values (#{id,jdbcType=DECIMAL}, #{userId,jdbcType=DECIMAL}, #{receiverName,jdbcType=VARCHAR}, 
+      #{receiverPhone,jdbcType=VARCHAR}, #{receiverMobile,jdbcType=VARCHAR}, #{receiverProvince,jdbcType=VARCHAR}, 
+      #{receiverCity,jdbcType=VARCHAR}, #{receiverDistrict,jdbcType=VARCHAR}, #{receiverAddress,jdbcType=VARCHAR}, 
+      #{receiverZip,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="edu.ouc.mail.pojo.Shipping" >
+    insert into MAIL_SHIPPING
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="receiverName != null" >
+        RECEIVER_NAME,
+      </if>
+      <if test="receiverPhone != null" >
+        RECEIVER_PHONE,
+      </if>
+      <if test="receiverMobile != null" >
+        RECEIVER_MOBILE,
+      </if>
+      <if test="receiverProvince != null" >
+        RECEIVER_PROVINCE,
+      </if>
+      <if test="receiverCity != null" >
+        RECEIVER_CITY,
+      </if>
+      <if test="receiverDistrict != null" >
+        RECEIVER_DISTRICT,
+      </if>
+      <if test="receiverAddress != null" >
+        RECEIVER_ADDRESS,
+      </if>
+      <if test="receiverZip != null" >
+        RECEIVER_ZIP,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=DECIMAL},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=DECIMAL},
+      </if>
+      <if test="receiverName != null" >
+        #{receiverName,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverPhone != null" >
+        #{receiverPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverMobile != null" >
+        #{receiverMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverProvince != null" >
+        #{receiverProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverCity != null" >
+        #{receiverCity,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverDistrict != null" >
+        #{receiverDistrict,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverAddress != null" >
+        #{receiverAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverZip != null" >
+        #{receiverZip,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.ouc.mail.pojo.Shipping" >
+    update MAIL_SHIPPING
+    <set >
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=DECIMAL},
+      </if>
+      <if test="receiverName != null" >
+        RECEIVER_NAME = #{receiverName,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverPhone != null" >
+        RECEIVER_PHONE = #{receiverPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverMobile != null" >
+        RECEIVER_MOBILE = #{receiverMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverProvince != null" >
+        RECEIVER_PROVINCE = #{receiverProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverCity != null" >
+        RECEIVER_CITY = #{receiverCity,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverDistrict != null" >
+        RECEIVER_DISTRICT = #{receiverDistrict,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverAddress != null" >
+        RECEIVER_ADDRESS = #{receiverAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverZip != null" >
+        RECEIVER_ZIP = #{receiverZip,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.ouc.mail.pojo.Shipping" >
+    update MAIL_SHIPPING
+    set USER_ID = #{userId,jdbcType=DECIMAL},
+      RECEIVER_NAME = #{receiverName,jdbcType=VARCHAR},
+      RECEIVER_PHONE = #{receiverPhone,jdbcType=VARCHAR},
+      RECEIVER_MOBILE = #{receiverMobile,jdbcType=VARCHAR},
+      RECEIVER_PROVINCE = #{receiverProvince,jdbcType=VARCHAR},
+      RECEIVER_CITY = #{receiverCity,jdbcType=VARCHAR},
+      RECEIVER_DISTRICT = #{receiverDistrict,jdbcType=VARCHAR},
+      RECEIVER_ADDRESS = #{receiverAddress,jdbcType=VARCHAR},
+      RECEIVER_ZIP = #{receiverZip,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+</mapper>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.ouc.mail.dao.PayInfoMapper" >
+  <resultMap id="BaseResultMap" type="edu.ouc.mail.pojo.PayInfo" >
+    <constructor >
+      <idArg column="ID" jdbcType="DECIMAL" javaType="java.lang.Long" />
+      <arg column="USER_ID" jdbcType="DECIMAL" javaType="java.lang.Long" />
+      <arg column="ORDER_NO" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="PAY_PLATFORM" jdbcType="DECIMAL" javaType="java.lang.Long" />
+      <arg column="PLATFORM_NUMBER" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="PLATFORM_STATUS" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="CREATE_TIME" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="UPDATE_TIME" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, USER_ID, ORDER_NO, PAY_PLATFORM, PLATFORM_NUMBER, PLATFORM_STATUS, CREATE_TIME, 
+    UPDATE_TIME
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from MAIL_PAY_INFO
+    where ID = #{id,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from MAIL_PAY_INFO
+    where ID = #{id,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="edu.ouc.mail.pojo.PayInfo" >
+    insert into MAIL_PAY_INFO (ID, USER_ID, ORDER_NO, 
+      PAY_PLATFORM, PLATFORM_NUMBER, PLATFORM_STATUS, 
+      CREATE_TIME, UPDATE_TIME)
+    values (#{id,jdbcType=DECIMAL}, #{userId,jdbcType=DECIMAL}, #{orderNo,jdbcType=DECIMAL}, 
+      #{payPlatform,jdbcType=DECIMAL}, #{platformNumber,jdbcType=VARCHAR}, #{platformStatus,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="edu.ouc.mail.pojo.PayInfo" >
+    insert into MAIL_PAY_INFO
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="orderNo != null" >
+        ORDER_NO,
+      </if>
+      <if test="payPlatform != null" >
+        PAY_PLATFORM,
+      </if>
+      <if test="platformNumber != null" >
+        PLATFORM_NUMBER,
+      </if>
+      <if test="platformStatus != null" >
+        PLATFORM_STATUS,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=DECIMAL},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=DECIMAL},
+      </if>
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=DECIMAL},
+      </if>
+      <if test="payPlatform != null" >
+        #{payPlatform,jdbcType=DECIMAL},
+      </if>
+      <if test="platformNumber != null" >
+        #{platformNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="platformStatus != null" >
+        #{platformStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.ouc.mail.pojo.PayInfo" >
+    update MAIL_PAY_INFO
+    <set >
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=DECIMAL},
+      </if>
+      <if test="orderNo != null" >
+        ORDER_NO = #{orderNo,jdbcType=DECIMAL},
+      </if>
+      <if test="payPlatform != null" >
+        PAY_PLATFORM = #{payPlatform,jdbcType=DECIMAL},
+      </if>
+      <if test="platformNumber != null" >
+        PLATFORM_NUMBER = #{platformNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="platformStatus != null" >
+        PLATFORM_STATUS = #{platformStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.ouc.mail.pojo.PayInfo" >
+    update MAIL_PAY_INFO
+    set USER_ID = #{userId,jdbcType=DECIMAL},
+      ORDER_NO = #{orderNo,jdbcType=DECIMAL},
+      PAY_PLATFORM = #{payPlatform,jdbcType=DECIMAL},
+      PLATFORM_NUMBER = #{platformNumber,jdbcType=VARCHAR},
+      PLATFORM_STATUS = #{platformStatus,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+</mapper>
