@@ -151,4 +151,32 @@
       UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
     where ID = #{id,jdbcType=DECIMAL}
   </update>
+  <select id="checkUsername" resultType="int" parameterType="string">
+  SELECT count(1) FROM mail_user
+  WHERE username=#{username}
+  </select>
+  <select id="checkEmail" resultType="int" parameterType="string">
+    SELECT count(1) FROM mail_user
+    WHERE email=#{email}
+  </select>
+  <select id="selectLogin" resultMap="BaseResultMap" parameterType="map">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM mail_user
+    WHERE username=#{username} AND password=#{password}
+  </select>
+  <select id="selectQuestionByUsername" resultType="string" parameterType="string">
+    SELECT question FROM mail_user
+    WHERE username=#{username}
+  </select>
+  <select id="checkAnswer" resultType="int" parameterType="map">
+    SELECT
+    count(1)
+    FROM mail_user
+    WHERE username=#{username} AND question=#{question} AND answer=#{answer}
+  </select>
+  <update id="resetPasswordByforget" parameterType="map">
+    UPDATE mail_user SET password=#{passwordNew},update_time=now()
+    WHERE username=${username}
+  </update>
 </mapper>
