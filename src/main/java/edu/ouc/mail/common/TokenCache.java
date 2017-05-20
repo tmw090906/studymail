@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Created by tmw090906 on 2017/5/19.
+ * 使用Google的COMMON包实现本地缓存类
  */
 public class TokenCache {
 

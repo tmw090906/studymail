@@ -10,6 +10,7 @@ import java.util.Properties;
 
 /**
  * Created by tmw090906 on 2017/5/20.
+ * Properties文件读取工具类
  */
 public class PropertiesUtil {
 

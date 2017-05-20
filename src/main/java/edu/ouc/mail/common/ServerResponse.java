@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 /**
  * Created by tmw090906 on 2017/5/19.
+ * 返回信息封装类
  */
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 //保证序列化时不序列NULL对象

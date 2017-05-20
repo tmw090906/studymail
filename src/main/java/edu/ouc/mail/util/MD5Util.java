@@ -4,6 +4,7 @@ import java.security.MessageDigest;
 
 /**
  * Created by tmw090906 on 2017/5/19.
+ * 实现MD5的工具类
  */
 public class MD5Util {
     private static String byteArrayToHexString(byte b[]) {

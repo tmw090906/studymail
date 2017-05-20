@@ -2,6 +2,7 @@ package edu.ouc.mail.common;
 
 /**
  * Created by tmw090906 on 2017/5/19.
+ * 返回状态枚举类
  */
 public enum  ResponseCode {
 

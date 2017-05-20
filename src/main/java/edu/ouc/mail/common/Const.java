@@ -2,6 +2,7 @@ package edu.ouc.mail.common;
 
 /**
  * Created by tmw090906 on 2017/5/19.
+ * 常量类
  */
 public class Const {
 

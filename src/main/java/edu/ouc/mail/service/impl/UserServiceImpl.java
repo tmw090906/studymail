@@ -98,8 +98,9 @@ public class UserServiceImpl implements IUserService {
     public ServerResponse<String> checkAnswer(String username, String question,String answer) {
         int resultCount = userMapper.checkAnswer(username,question,answer);
         if(resultCount > 0){
-            //说明用户输入信息正确
+            //使用UUID作为本地缓存的value
             String forgetToken = UUID.randomUUID().toString();
+            //使用常量+username的形式作为本地缓存的key
             TokenCache.setKey(TokenCache.TOKEN_PREFIX + username,forgetToken);
             return ServerResponse.createBySuccess(forgetToken);
         }
