@@ -35,8 +35,8 @@
       UPDATE_TIME)
     values (#{id,jdbcType=DECIMAL}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{question,jdbcType=VARCHAR}, 
-      #{answer,jdbcType=VARCHAR}, #{role,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+      #{answer,jdbcType=VARCHAR}, #{role,jdbcType=DECIMAL}, sysdate,
+      sysdate)
   </insert>
   <insert id="insertSelective" parameterType="edu.ouc.mail.pojo.User" >
     insert into MAIL_USER
@@ -133,7 +133,7 @@
         CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null" >
-        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+        UPDATE_TIME = sysdate,
       </if>
     </set>
     where ID = #{id,jdbcType=DECIMAL}
@@ -148,7 +148,7 @@
       ANSWER = #{answer,jdbcType=VARCHAR},
       ROLE = #{role,jdbcType=DECIMAL},
       CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
-      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+      UPDATE_TIME = sysdate
     where ID = #{id,jdbcType=DECIMAL}
   </update>
   <select id="checkUsername" resultType="int" parameterType="string">
@@ -176,7 +176,14 @@
     WHERE username=#{username} AND question=#{question} AND answer=#{answer}
   </select>
   <update id="resetPasswordByforget" parameterType="map">
-    UPDATE mail_user SET password=#{passwordNew},update_time=now()
-    WHERE username=${username}
+    UPDATE mail_user SET password=#{passwordNew},update_time=sysdate
+    WHERE username=#{username}
   </update>
+  <select id="checkPassword" parameterType="map" resultType="int">
+    SELECT count(1) FROM mail_user WHERE id=#{userId} and password=#{password}
+  </select>
+  <select id="checkEmailByUserId" parameterType="map" resultType="int">
+    SELECT count(1) FROM mail_user
+    WHERE email=#{email} and id!=#{userId}
+  </select>
 </mapper>

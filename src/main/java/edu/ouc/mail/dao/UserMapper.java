@@ -27,4 +27,8 @@ public interface UserMapper {
     int resetPasswordByforget(@Param("username")String username,@Param("passwordNew")String passwordNew);
 
     String selectQuestionByUsername(String username);
+
+    int checkPassword(@Param("password")String password,@Param("userId")Long userId);
+
+    int checkEmailByUserId(@Param("email")String email,@Param("userId")Long userID);
 }

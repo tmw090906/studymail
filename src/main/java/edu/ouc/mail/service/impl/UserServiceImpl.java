@@ -65,7 +65,7 @@ public class UserServiceImpl implements IUserService {
             if(Const.USERNAME.equals(type)){
                 int resultCount = userMapper.checkUsername(str);
                 if(resultCount > 0){
-                    return ServerResponse.createBySuccessMessage("用户名已存在");
+                    return ServerResponse.createByErrorMessage("用户名已存在");
                 }
             }
             if(Const.EMAIL.equals(type)){
@@ -130,5 +130,53 @@ public class UserServiceImpl implements IUserService {
             return ServerResponse.createByErrorMessage("Token错误，请重新获取重置密码Token");
         }
         return ServerResponse.createByErrorMessage("修改密码失败");
+    }
+
+    @Override
+    public ServerResponse<String> resetPassword(User user, String passwordOld, String passwordNew) {
+        //防止横向越权，校验用户旧密码
+        int resultCount = userMapper.checkPassword(MD5Util.MD5EncodeUtf8(passwordOld),user.getId());
+        if(resultCount == 0){
+            return ServerResponse.createByErrorMessage("旧密码输入错误");
+        }
+        user.setPassword(MD5Util.MD5EncodeUtf8(passwordNew));
+        resultCount = userMapper.updateByPrimaryKeySelective(user);
+        if(resultCount > 0){
+            return ServerResponse.createBySuccessMessage("密码修改成功");
+        }
+        return ServerResponse.createByErrorMessage("未知错误，密码修改失败");
+    }
+
+    @Override
+    public ServerResponse<User> updateUserInfo(User user) {
+        //username不能被修改
+        //email也要进行校验，校验新的Email是否存在，并且如果相同的话不能是当前这个用户的
+        int resultCount = userMapper.checkEmailByUserId(user.getEmail(),user.getId());
+        if(resultCount > 0){
+            return ServerResponse.createByErrorMessage("email已经存在，请更换后再进行更新");
+        }
+        User updateUser = new User();
+        updateUser.setId(user.getId());
+        updateUser.setEmail(user.getEmail());
+        updateUser.setPhone(user.getPhone());
+        updateUser.setAnswer(user.getAnswer());
+        updateUser.setQuestion(user.getQuestion());
+        int updateCount = userMapper.updateByPrimaryKeySelective(updateUser);
+        if(updateCount > 0 ){
+            updateUser = userMapper.selectByPrimaryKey(updateUser.getId());
+            updateUser.setPassword(StringUtils.EMPTY);
+            return ServerResponse.createBySuccess("修改个人信息成功",updateUser);
+        }
+        return ServerResponse.createByErrorMessage("未知错误，修改个人信息失败");
+    }
+
+    @Override
+    public ServerResponse<User> getInformation(Long userId) {
+        User user = userMapper.selectByPrimaryKey(userId);
+        if(user == null){
+            return ServerResponse.createByErrorMessage("找不到当前用户");
+        }
+        user.setPassword(org.apache.commons.lang3.StringUtils.EMPTY);
+        return ServerResponse.createBySuccess(user);
     }
 }
