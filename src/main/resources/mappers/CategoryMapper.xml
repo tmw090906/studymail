@@ -30,8 +30,8 @@
       STATUS, SORT_ORDER, CREATE_TIME, 
       UPDATE_TIME)
     values (#{id,jdbcType=DECIMAL}, #{parentId,jdbcType=DECIMAL}, #{name,jdbcType=VARCHAR}, 
-      #{status,jdbcType=DECIMAL}, #{sortOrder,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+      #{status,jdbcType=DECIMAL}, #{sortOrder,jdbcType=DECIMAL}, sysdate,
+      sysdate)
   </insert>
   <insert id="insertSelective" parameterType="edu.ouc.mail.pojo.Category" >
     insert into MAIL_CATEGORY
@@ -52,10 +52,10 @@
         SORT_ORDER,
       </if>
       <if test="createTime != null" >
-        CREATE_TIME,
+        sysdate,
       </if>
       <if test="updateTime != null" >
-        UPDATE_TIME,
+        sysdate,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -101,7 +101,7 @@
         CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null" >
-        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+        UPDATE_TIME = sysdate,
       </if>
     </set>
     where ID = #{id,jdbcType=DECIMAL}
@@ -113,7 +113,14 @@
       STATUS = #{status,jdbcType=DECIMAL},
       SORT_ORDER = #{sortOrder,jdbcType=DECIMAL},
       CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
-      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+      UPDATE_TIME = sysdate
     where ID = #{id,jdbcType=DECIMAL}
   </update>
+
+  <select id="selectCategoryChildrenByParentId" parameterType="long" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM mail_category
+    WHERE parent_id=#{categoryId}
+  </select>
 </mapper>
