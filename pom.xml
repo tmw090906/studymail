@@ -156,7 +156,9 @@
       <version>1.4</version>
       <!--<scope>runtime</scope>-->
     </dependency>
-    <dependency>
+
+    <!-- 为什么要使用这个jar代替原生lang和collection？ -->
+   <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
       <version>3.5</version>
