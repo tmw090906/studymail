@@ -40,7 +40,7 @@
     values (#{id,jdbcType=DECIMAL}, #{userId,jdbcType=DECIMAL}, #{receiverName,jdbcType=VARCHAR}, 
       #{receiverPhone,jdbcType=VARCHAR}, #{receiverMobile,jdbcType=VARCHAR}, #{receiverProvince,jdbcType=VARCHAR}, 
       #{receiverCity,jdbcType=VARCHAR}, #{receiverDistrict,jdbcType=VARCHAR}, #{receiverAddress,jdbcType=VARCHAR}, 
-      #{receiverZip,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      #{receiverZip,jdbcType=VARCHAR}, sysdate, sysdate
       )
   </insert>
   <insert id="insertSelective" parameterType="edu.ouc.mail.pojo.Shipping" >
@@ -76,10 +76,10 @@
       <if test="receiverZip != null" >
         RECEIVER_ZIP,
       </if>
-      <if test="createTime != null" >
+      <if test="1 == 1" >
         CREATE_TIME,
       </if>
-      <if test="updateTime != null" >
+      <if test="1 == 1" >
         UPDATE_TIME,
       </if>
     </trim>
@@ -114,11 +114,11 @@
       <if test="receiverZip != null" >
         #{receiverZip,jdbcType=VARCHAR},
       </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
+      <if test="1 == 1" >
+        sysdate,
       </if>
-      <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
+      <if test="1 == 1" >
+        sysdate,
       </if>
     </trim>
   </insert>
@@ -155,8 +155,8 @@
       <if test="createTime != null" >
         CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateTime != null" >
-        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      <if test="1 == 1" >
+        sysdate,
       </if>
     </set>
     where ID = #{id,jdbcType=DECIMAL}
@@ -173,7 +173,38 @@
       RECEIVER_ADDRESS = #{receiverAddress,jdbcType=VARCHAR},
       RECEIVER_ZIP = #{receiverZip,jdbcType=VARCHAR},
       CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
-      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+      UPDATE_TIME = sysdate
     where ID = #{id,jdbcType=DECIMAL}
   </update>
+
+  <update id="updateByShipping" parameterType="edu.ouc.mail.pojo.Shipping">
+    update MAIL_SHIPPING
+    set USER_ID = #{userId,jdbcType=DECIMAL},
+    RECEIVER_NAME = #{receiverName,jdbcType=VARCHAR},
+    RECEIVER_PHONE = #{receiverPhone,jdbcType=VARCHAR},
+    RECEIVER_MOBILE = #{receiverMobile,jdbcType=VARCHAR},
+    RECEIVER_PROVINCE = #{receiverProvince,jdbcType=VARCHAR},
+    RECEIVER_CITY = #{receiverCity,jdbcType=VARCHAR},
+    RECEIVER_DISTRICT = #{receiverDistrict,jdbcType=VARCHAR},
+    RECEIVER_ADDRESS = #{receiverAddress,jdbcType=VARCHAR},
+    RECEIVER_ZIP = #{receiverZip,jdbcType=VARCHAR},
+    CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+    UPDATE_TIME = sysdate
+    where id = #{id,jdbcType=INTEGER}
+    and user_id = #{userId,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByUserIdShippingId" resultMap="BaseResultMap" parameterType="map">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM MAIL_SHIPPING
+    WHERE user_id=#{userId} and id=#{shippingId}
+  </select>
+
+  <select id="selectShippingListByUserId" resultMap="BaseResultMap" parameterType="long">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM MAIL_SHIPPING
+    WHERE user_id=#{userId}
+  </select>
 </mapper>

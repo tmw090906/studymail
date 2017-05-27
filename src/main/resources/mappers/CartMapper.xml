@@ -30,8 +30,8 @@
       QUANTITY, CHECKED, CREATE_TIME, 
       UPDATE_TIME)
     values (#{id,jdbcType=DECIMAL}, #{userId,jdbcType=DECIMAL}, #{productId,jdbcType=DECIMAL}, 
-      #{quantity,jdbcType=DECIMAL}, #{checked,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+      #{quantity,jdbcType=DECIMAL}, #{checked,jdbcType=DECIMAL}, sysdate,
+      sysdate)
   </insert>
   <insert id="insertSelective" parameterType="edu.ouc.mail.pojo.Cart" >
     insert into MAIL_CART
@@ -51,10 +51,10 @@
       <if test="checked != null" >
         CHECKED,
       </if>
-      <if test="createTime != null" >
+      <if test="1 == 1" >
         CREATE_TIME,
       </if>
-      <if test="updateTime != null" >
+      <if test="1 == 1" >
         UPDATE_TIME,
       </if>
     </trim>
@@ -74,11 +74,11 @@
       <if test="checked != null" >
         #{checked,jdbcType=DECIMAL},
       </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
+      <if test="1 == 1" >
+        sysdate,
       </if>
-      <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
+      <if test="1 == 1" >
+        sysdate,
       </if>
     </trim>
   </insert>
@@ -100,8 +100,8 @@
       <if test="createTime != null" >
         CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateTime != null" >
-        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      <if test="1 == 1" >
+        UPDATE_TIME = sysdate,
       </if>
     </set>
     where ID = #{id,jdbcType=DECIMAL}
@@ -113,7 +113,59 @@
       QUANTITY = #{quantity,jdbcType=DECIMAL},
       CHECKED = #{checked,jdbcType=DECIMAL},
       CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
-      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+      UPDATE_TIME = sysdate
     where ID = #{id,jdbcType=DECIMAL}
   </update>
+
+  <select id="selectByUserIdAndProductId" parameterType="map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM MAIL_CART
+    WHERE product_id=#{productId} AND user_id=#{userId}
+  </select>
+
+  <select id="selectByUserId" resultMap="BaseResultMap" parameterType="long">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM MAIL_CART
+    WHERE user_id=#{userId}
+  </select>
+
+  <select id="selectCartProductCheckedStatusByUserId" parameterType="long" resultType="int">
+    SELECT COUNT(1)
+    FROM MAIL_CART
+    WHERE user_id=#{userId} and checked=0
+  </select>
+
+  <delete id="deleteByUserIdAndProductIds" parameterType="map">
+    DELETE FROM MAIL_CART
+    WHERE user_id=#{userId}
+    <if test="productIdList != null">
+      and product_id in
+      <foreach collection="productIdList" item="item" open="(" close=")" separator="," index="index">
+        #{item}
+      </foreach>
+    </if>
+  </delete>
+
+  <update id="setCheckedOrUnCheckedStatus" parameterType="map">
+    UPDATE MAIL_CART SET checked=#{checked},update_time=sysdate
+    where user_id=#{userId}
+    <if test="productId != null">
+      and product_id=#{productId}
+    </if>
+  </update>
+
+  <select id="selectCartProductCount" parameterType="long" resultType="int">
+    select nvl(sum(quantity),0) as count from MAIL_CART where user_id = #{userId}
+  </select>
+
+
+
+
+
+
+
+
+
 </mapper>
