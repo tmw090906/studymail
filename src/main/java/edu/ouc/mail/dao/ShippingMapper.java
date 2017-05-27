@@ -24,4 +24,6 @@ public interface ShippingMapper {
     Shipping selectByUserIdShippingId(@Param("userId") Long userId, @Param("shippingId") Long shippingId);
 
     List<Shipping> selectShippingListByUserId(Long userId);
+
+    int deleteByUserIdShippingId(@Param("userId") Long userId, @Param("shippingId") Long shippingId);
 }

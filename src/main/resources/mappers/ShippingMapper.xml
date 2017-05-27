@@ -31,19 +31,25 @@
     delete from MAIL_SHIPPING
     where ID = #{id,jdbcType=DECIMAL}
   </delete>
-  <insert id="insert" parameterType="edu.ouc.mail.pojo.Shipping" >
+  <insert id="insert" parameterType="edu.ouc.mail.pojo.Shipping">
+    <selectKey resultType="long" keyProperty="id" order="AFTER">
+      SELECT shipping_seq.nextval as id FROM dual
+    </selectKey>
     insert into MAIL_SHIPPING (ID, USER_ID, RECEIVER_NAME, 
       RECEIVER_PHONE, RECEIVER_MOBILE, RECEIVER_PROVINCE, 
       RECEIVER_CITY, RECEIVER_DISTRICT, RECEIVER_ADDRESS, 
       RECEIVER_ZIP, CREATE_TIME, UPDATE_TIME
       )
-    values (#{id,jdbcType=DECIMAL}, #{userId,jdbcType=DECIMAL}, #{receiverName,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=DECIMAL}, #{receiverName,jdbcType=VARCHAR},
       #{receiverPhone,jdbcType=VARCHAR}, #{receiverMobile,jdbcType=VARCHAR}, #{receiverProvince,jdbcType=VARCHAR}, 
       #{receiverCity,jdbcType=VARCHAR}, #{receiverDistrict,jdbcType=VARCHAR}, #{receiverAddress,jdbcType=VARCHAR}, 
       #{receiverZip,jdbcType=VARCHAR}, sysdate, sysdate
       )
   </insert>
   <insert id="insertSelective" parameterType="edu.ouc.mail.pojo.Shipping" >
+    <selectKey resultType="long" keyProperty="id" order="AFTER">
+      SELECT shipping_seq.nextval as id FROM dual
+    </selectKey>
     insert into MAIL_SHIPPING
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -179,7 +185,7 @@
 
   <update id="updateByShipping" parameterType="edu.ouc.mail.pojo.Shipping">
     update MAIL_SHIPPING
-    set USER_ID = #{userId,jdbcType=DECIMAL},
+    set
     RECEIVER_NAME = #{receiverName,jdbcType=VARCHAR},
     RECEIVER_PHONE = #{receiverPhone,jdbcType=VARCHAR},
     RECEIVER_MOBILE = #{receiverMobile,jdbcType=VARCHAR},
@@ -191,7 +197,7 @@
     CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
     UPDATE_TIME = sysdate
     where id = #{id,jdbcType=INTEGER}
-    and user_id = #{userId,jdbcType=INTEGER}
+    and user_id = #{userId}
   </update>
 
   <select id="selectByUserIdShippingId" resultMap="BaseResultMap" parameterType="map">
@@ -207,4 +213,11 @@
     FROM MAIL_SHIPPING
     WHERE user_id=#{userId}
   </select>
+
+  <delete id="deleteByUserIdShippingId" parameterType="map">
+    DELETE FROM MAIL_SHIPPING
+    WHERE id=#{shippingId} and user_id=#{userId}
+  </delete>
+
+
 </mapper>

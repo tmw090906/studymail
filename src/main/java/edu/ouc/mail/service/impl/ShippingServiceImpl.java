@@ -2,6 +2,7 @@ package edu.ouc.mail.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Maps;
 import edu.ouc.mail.common.ServerResponse;
 import edu.ouc.mail.dao.ShippingMapper;
 import edu.ouc.mail.pojo.Shipping;
@@ -10,9 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by tmw090906 on 2017/5/26.
+ * 所有ShippingId和UserId一起查询都是为了防止横向越权
  */
 @Service("iShippingService")
 public class ShippingServiceImpl implements IShippingService {
@@ -29,7 +32,9 @@ public class ShippingServiceImpl implements IShippingService {
         shipping.setUserId(userId);
         int rowCount = shippingMapper.insert(shipping);
         if(rowCount >= 0 ){
-            return ServerResponse.createBySuccess("新建地址成功");
+            Map temp = Maps.newHashMap();
+            temp.put("shippingId",shipping.getId());
+            return ServerResponse.createBySuccess("新建地址成功",temp);
         }else {
             return ServerResponse.createByErrorMessage("新建地址失败");
         }
@@ -37,7 +42,7 @@ public class ShippingServiceImpl implements IShippingService {
 
     @Override
     public ServerResponse deleteShipping(Long userId, Long shippingId) {
-        int rowCount = shippingMapper.deleteByPrimaryKey(shippingId);
+        int rowCount = shippingMapper.deleteByUserIdShippingId(userId,shippingId);
         if(rowCount >= 0 ){
             return ServerResponse.createBySuccess("删除地址成功");
         }else {
