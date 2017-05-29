@@ -1,6 +1,9 @@
 package edu.ouc.mail.dao;
 
 import edu.ouc.mail.pojo.OrderItem;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface OrderItemMapper {
     int deleteByPrimaryKey(Long id);
@@ -14,4 +17,6 @@ public interface OrderItemMapper {
     int updateByPrimaryKeySelective(OrderItem record);
 
     int updateByPrimaryKey(OrderItem record);
+
+    List<OrderItem> selectOrderItemByOrderNoUserId(@Param("userId") Long userId, @Param("orderNo") Long orderNo);
 }

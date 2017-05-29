@@ -33,7 +33,7 @@
       CREATE_TIME, UPDATE_TIME)
     values (#{id,jdbcType=DECIMAL}, #{userId,jdbcType=DECIMAL}, #{orderNo,jdbcType=DECIMAL}, 
       #{payPlatform,jdbcType=DECIMAL}, #{platformNumber,jdbcType=VARCHAR}, #{platformStatus,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+      sysdate, sysdate)
   </insert>
   <insert id="insertSelective" parameterType="edu.ouc.mail.pojo.PayInfo" >
     insert into MAIL_PAY_INFO
@@ -56,10 +56,10 @@
       <if test="platformStatus != null" >
         PLATFORM_STATUS,
       </if>
-      <if test="createTime != null" >
+      <if test="1 == 1" >
         CREATE_TIME,
       </if>
-      <if test="updateTime != null" >
+      <if test="1 == 1" >
         UPDATE_TIME,
       </if>
     </trim>
@@ -82,11 +82,11 @@
       <if test="platformStatus != null" >
         #{platformStatus,jdbcType=VARCHAR},
       </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
+      <if test="1 == 1" >
+        sysdate,
       </if>
-      <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
+      <if test="1 == 1" >
+        sysdate,
       </if>
     </trim>
   </insert>
@@ -111,8 +111,8 @@
       <if test="createTime != null" >
         CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateTime != null" >
-        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      <if test="1 == 1" >
+        UPDATE_TIME = sysdate,
       </if>
     </set>
     where ID = #{id,jdbcType=DECIMAL}
@@ -125,7 +125,7 @@
       PLATFORM_NUMBER = #{platformNumber,jdbcType=VARCHAR},
       PLATFORM_STATUS = #{platformStatus,jdbcType=VARCHAR},
       CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
-      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+      UPDATE_TIME = sysdate
     where ID = #{id,jdbcType=DECIMAL}
   </update>
 </mapper>

@@ -38,7 +38,7 @@
     values (#{id,jdbcType=DECIMAL}, #{userId,jdbcType=DECIMAL}, #{orderNo,jdbcType=DECIMAL}, 
       #{productId,jdbcType=DECIMAL}, #{productName,jdbcType=VARCHAR}, #{productImage,jdbcType=VARCHAR}, 
       #{currentUnitPrice,jdbcType=DECIMAL}, #{quantity,jdbcType=DECIMAL}, #{totalPrice,jdbcType=DECIMAL}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+      sysdate,sysdate)
   </insert>
   <insert id="insertSelective" parameterType="edu.ouc.mail.pojo.OrderItem" >
     insert into MAIL_ORDER_ITEM
@@ -70,10 +70,10 @@
       <if test="totalPrice != null" >
         TOTAL_PRICE,
       </if>
-      <if test="createTime != null" >
+      <if test="1 == 1" >
         CREATE_TIME,
       </if>
-      <if test="updateTime != null" >
+      <if test="1 == 1" >
         UPDATE_TIME,
       </if>
     </trim>
@@ -105,11 +105,11 @@
       <if test="totalPrice != null" >
         #{totalPrice,jdbcType=DECIMAL},
       </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
+      <if test="1 == 1" >
+        sysdate,
       </if>
-      <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
+      <if test="1 == 1" >
+        sysdate,
       </if>
     </trim>
   </insert>
@@ -143,8 +143,8 @@
       <if test="createTime != null" >
         CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateTime != null" >
-        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      <if test="1 == 1" >
+        UPDATE_TIME = sysdate,
       </if>
     </set>
     where ID = #{id,jdbcType=DECIMAL}
@@ -160,7 +160,12 @@
       QUANTITY = #{quantity,jdbcType=DECIMAL},
       TOTAL_PRICE = #{totalPrice,jdbcType=DECIMAL},
       CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
-      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+      UPDATE_TIME = sysdate
     where ID = #{id,jdbcType=DECIMAL}
   </update>
+
+  <select id="selectOrderItemByOrderNoUserId" parameterType="map" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/>
+    FROM MAIL_ORDER_ITEM WHERE user_id=#{userId} and order_no=#{orderNo}
+  </select>
 </mapper>
