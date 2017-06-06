@@ -7,16 +7,14 @@ import com.google.common.collect.Maps;
 import edu.ouc.mail.common.Const;
 import edu.ouc.mail.common.ResponseCode;
 import edu.ouc.mail.common.ServerResponse;
-import edu.ouc.mail.dao.OrderMapper;
-import edu.ouc.mail.pojo.Order;
 import edu.ouc.mail.pojo.User;
 import edu.ouc.mail.service.IOrderService;
-import edu.ouc.mail.util.PropertiesUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,6 +34,112 @@ public class OrderController {
     @Autowired
     private IOrderService iOrderService;
 
+    //portal订单处理
+
+    /**
+     * 创建订单
+     * @param session
+     * @param shippingId
+     * @return
+     */
+    @RequestMapping("create.do")
+    @ResponseBody
+    public ServerResponse create(HttpSession session , Long shippingId){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorMessage("用户未登录，请先登陆");
+        }
+        return iOrderService.createOrder(user.getId(),shippingId);
+    }
+
+
+    /**
+     * 用于创建订单的前一步。
+     * 创建订单时，要获取商品详情，此时从购物车中选中的商品展示给用户
+     * 用户确认商品，总价后，通过提交订单（create.do）接口创建订单
+     * @param session
+     * @return
+     */
+    @RequestMapping("get_order_cart_product.do")
+    @ResponseBody
+    public ServerResponse getOrderCartProduct(HttpSession session){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorMessage("用户未登录，请先登陆");
+        }
+        return iOrderService.getOrderCartProduct(user.getId());
+    }
+
+    /**
+     * 个人中心查看自己所有订单
+     * @param session
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @RequestMapping("list.do")
+    @ResponseBody
+    public ServerResponse list(HttpSession session,
+                               @RequestParam(defaultValue = "1")int pageNum,
+                               @RequestParam(defaultValue = "10")int pageSize){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorMessage("用户未登录，请先登陆");
+        }
+        return iOrderService.getOrderList(user.getId(),pageNum,pageSize);
+    }
+
+
+    /**
+     * 查看所有订单详情
+     * @param session
+     * @param orderNo
+     * @return
+     */
+    @RequestMapping("detail.do")
+    @ResponseBody
+    public ServerResponse detail(HttpSession session,Long orderNo){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorMessage("用户未登录，请先登陆");
+        }
+        return iOrderService.getOrderDetail(user.getId(),orderNo);
+    }
+
+
+    /**
+     * 取消当前订单
+     * 若订单已经付款，则无法取消
+     * @param session
+     * @param orderNo
+     * @return
+     */
+    @RequestMapping("cancel.do")
+    @ResponseBody
+    public ServerResponse cancel(HttpSession session,Long orderNo){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorMessage("用户未登录，请先登陆");
+        }
+        return iOrderService.cancelOrderByOrderNo(user.getId(),orderNo);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //支付相关
 
     @RequestMapping("pay.do")
     @ResponseBody

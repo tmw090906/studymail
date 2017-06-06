@@ -16,4 +16,22 @@ public interface IOrderService {
     ServerResponse<Boolean> queryOrderPayStatus(Long userId,Long oderNo);
 
     boolean checkedOrder(Map<String,String> params);
+
+    ServerResponse createOrder(Long userId,Long shippingId);
+
+    ServerResponse getOrderCartProduct(Long userId);
+
+    ServerResponse getOrderList(Long userId,int pageNum,int pageSize);
+
+    ServerResponse getOrderDetail(Long userId,Long orderNo);
+
+    ServerResponse<String> cancelOrderByOrderNo(Long userId,Long orderNo);
+
+    ServerResponse manageList(int pageNum,int pageSize);
+
+    ServerResponse manageSearch(Long orderNo,int pageNum,int pageSize);
+
+    ServerResponse managerDetail(Long orderNo);
+
+    ServerResponse managerSend(Long orderNo);
 }

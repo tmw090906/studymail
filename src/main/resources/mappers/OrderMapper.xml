@@ -211,4 +211,17 @@
     SELECT <include refid="Base_Column_List"/>
     FROM MAIL_ORDER WHERE order_no=#{orderNo}
   </select>
+
+  <select id="getOrderListByUserId" resultMap="BaseResultMap" parameterType="long">
+    SELECT <include refid="Base_Column_List"/>
+    FROM MAIL_ORDER
+    WHERE USER_ID=#{userId}
+    order by create_time desc
+  </select>
+
+  <select id="getAllOrder" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/>
+    FROM MAIL_ORDER
+    order by create_time desc
+  </select>
 </mapper>

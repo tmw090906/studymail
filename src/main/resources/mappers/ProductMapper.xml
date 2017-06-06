@@ -211,4 +211,10 @@
       </foreach>
     </if>
   </select>
+
+  <select id="getListByProductId" resultMap="BaseResultMap" parameterType="long">
+    SELECT <include refid="Base_Column_List"/>
+    FROM MAIL_PRODUCT
+    WHERE id=#{productId}
+  </select>
 </mapper>

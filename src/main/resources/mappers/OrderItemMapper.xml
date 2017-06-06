@@ -168,4 +168,32 @@
     SELECT <include refid="Base_Column_List"/>
     FROM MAIL_ORDER_ITEM WHERE user_id=#{userId} and order_no=#{orderNo}
   </select>
+
+  <insert id="batchInsert" parameterType="list">
+    insert into MAIL_ORDER_ITEM (ID, USER_ID, ORDER_NO,
+    PRODUCT_ID, PRODUCT_NAME, PRODUCT_IMAGE,
+    CURRENT_UNIT_PRICE, QUANTITY, TOTAL_PRICE,
+    CREATE_TIME, UPDATE_TIME)
+    <foreach close=")" collection="orderItemList" item="item" index="index" open="(" separator="union">
+      select
+      #{item.id,jdbcType=DECIMAL},
+      #{item.userId,jdbcType=DECIMAL},
+      #{item.orderNo,jdbcType=DECIMAL},
+      #{item.productId,jdbcType=DECIMAL},
+      #{item.productName,jdbcType=VARCHAR},
+      #{item.productImage,jdbcType=VARCHAR},
+      #{item.currentUnitPrice,jdbcType=DECIMAL},
+      #{item.quantity,jdbcType=DECIMAL},
+      #{item.totalPrice,jdbcType=DECIMAL},
+      #{item.createTime,jdbcType=TIMESTAMP},
+      #{item.updateTime,jdbcType=TIMESTAMP},
+      from dual
+    </foreach>
+  </insert>
+
+  <select id="getOrderItemListByOrderNo" parameterType="long" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/>
+    FROM MAIL_ORDER_ITEM
+    WHERE order_no=#{orderNo}
+  </select>
 </mapper>
